@@ -1,6 +1,6 @@
 {
   "name": "prac-fn",
-  "version": "0.9.0",
+  "version": "1.20221222.0",
   "description": "Some practical functions SC-NodeServer based on",
   "main": "index.js",
   "scripts": {},
@@ -14,7 +14,7 @@
     "path",
     "regexp"
   ],
-  "author": "E0SelmY4V",
+  "author": "e0selmy4v",
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "accurtype": "^2.4.166",
