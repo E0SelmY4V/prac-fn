@@ -1,100 +1,102 @@
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
-const { scpoProce } = require('scpo-proce');
-const { cqtPaths } = require('./lang');
-
-/**
- * @typedef {scpoProce.Proce} Proce
- * @typedef {(name:string,callback:scpoProce.callbackNext)=>Proce} QueuePusher
- * @typedef {(opn:BasicOpera)=>PlurOpera} PlurOperaCnver
- * @typedef {(opn:(...args)=>string)=>(...args)=>string} PathFTypeCnver
- * @typedef {(file:string,...args?)=>Proce} BasicOpera
- * @typedef {(list:string[],...args?)=>Proce} PlurOpera
- */
-/**@type {{[name:string]:scpoProce.Proce}} */
-const quFunc = {
-	mkdir: scpoProce
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
-/**@type {{[file:string]:scpoProce.Proce}} */
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sJoin = exports.sJoinO = exports.fileRoute = exports.fileRouteO = exports.getFolder = exports.getFolderO = exports.write = exports.reads = exports.read = exports.open = exports.deleteAll = exports.unlinks = exports.unlink = exports.rmdirsAll = exports.rmdirAll = exports.rmdirs = exports.rmdir = exports.mkdirsAll = exports.mkdirAll = exports.mkdirs = exports.mkdir = exports.isDirectorys = exports.isDirectory = exports.statDir = exports.stats = exports.stat = exports.readdir = exports.existFiles = exports.testFiles = exports.isExists = exports.isExist = void 0;
+const fs = __importStar(require("fs"));
+const path_1 = __importDefault(require("path"));
+const scpo_proce_1 = __importDefault(require("scpo-proce"));
 const quFile = {};
-/**@type {QueuePusher} */
-const setOpn = (name, callback) => quFile[name] = (quFile[name] || (quFile[name] = scpoProce)).next(callback).setBefore();
-/**@type {QueuePusher} */
+const setOpn = (name, callback) => quFile[name] = (quFile[name] || (quFile[name] = scpo_proce_1.default)).next(callback).setBefore();
+const quFunc = {
+    mkdir: scpo_proce_1.default,
+};
 const setQue = (name, callback) => quFunc[name] = quFunc[name].next(callback).setBefore();
-/**@type {PlurOperaCnver} */
-const simulOpera = (opn) => (list) => scpoProce.all(list.map(e => opn(e)));
-/**@type {PlurOperaCnver} */
-const queueOpera = (opn) => (list) => scpoProce.snake(list.map(e => t => opn(e).then(t)));
-/**@type {PathFTypeCnver} */
-const pathCnvtoN = (opn) => (...args) => opn(...args, '/');
-/**@type {PathFTypeCnver} */
-const pathCnvtoS = (opn) => (...args) => opn(...cqtPaths(args));
-/**@type {BasicOpera} */
-this.isExist = (file) => scpoProce(t => fs.access(file, fs.constants.F_OK, e => t(!e, file)));
-/**@type {PlurOpera} */
-this.isExists = simulOpera(this.isExist);
-/**@type {PlurOpera} */
-this.testFiles = (list) => scpoProce.snake(list.map(e => (t, o) => this.isExist(e).then(r => r ? o(e) : t()))).then(() => false, e => e);
-/**@type {PlurOpera} */
-this.existFiles = (list) => this.isExists(list).then((n, f, r = []) => (n.forEach((e, i) => e && r.push(f[i])), r));
-/**@type {BasicOpera} */
-this.readdir = (file) => scpoProce((t, o) => fs.readdir(file, 'utf-8', (e, d) => e ? o(e) : t(d)));
-/**@type {BasicOpera} */
-this.stat = (file) => setOpn(file, (t, o) => fs.stat(file, (e, d) => e ? o(e) : t(d, file)));
-/**@type {PlurOpera} */
-this.stats = simulOpera(this.stat);
-/**@type {BasicOpera} */
-this.statDir = (file) => this.readdir(file).then(e => this.stats(e.map(d => path.join(file, d)))).take(1);
-/**@type {BasicOpera} */
-this.isDirectory = (file) => this.stat(file).then(e => e.isDirectory());
-/**@type {PlurOpera} */
-this.isDirectorys = simulOpera(this.isDirectory);
-/**@type {BasicOpera} */
-this.mkdir = (file) => setQue('mkdir', (t, o) => this.isExist(file).then(b => b ? this.stat(file).then(e => t(e.isDirectory())) : fs.mkdir(file, e => e ? o(e) : t(true))));
-/**@type {PlurOpera} */
-this.mkdirs = queueOpera(this.mkdir);
-/**@type {BasicOpera} */
-this.mkdirAll = (file) => this.mkdirs(this.fileRouteS(file));
-/**@type {PlurOpera} */
-this.mkdirsAll = queueOpera(this.mkdirAll);
-/**@type {BasicOpera} */
-this.rmdir = (file) => setOpn(file, (t, o) => fs.rmdir(file, e => e ? o(e) : t(true)));
-/**@type {PlurOpera} */
-this.rmdirs = queueOpera(this.rmdir);
-/**@type {BasicOpera} */
-this.rmdirAll = (file) => this.rmdirs(this.fileRouteS(file).reverse());
-/**@type {PlurOpera} */
-this.rmdirsAll = queueOpera(this.rmdirAll);
-/**@type {BasicOpera} */
-this.unlink = (file) => setOpn(file, (t, o) => fs.unlink(file, e => e ? o(e) : t(true)));
-/**@type {PlurOpera} */
-this.unlinks = simulOpera(this.unlink);
-/**@type {BasicOpera} */
-this.deleteAll = (file) => this.stat(file).then(s => s.isDirectory() ? this.statDir(file).then((s, f) => scpoProce.all(s.map((e, i) => e.isDirectory() ? this.deleteAll(f[i]) : this.unlink(f[i])))).take(1).then(() => this.rmdir(file)) : this.unlink(file)).take(1);
-/**@type {BasicOpera} */
-this.open = (file,/**@type {string} */flags) => scpoProce((t, o) => fs.open(file, flags, (e, d) => e ? o(e) : t(d)));
-/**@type {BasicOpera} */
-this.read = (file,/**@type {string} */options = 'utf-8') => setOpn(file, (t, o) => fs.readFile(file, options, (e, d) => e ? o(e) : t(d)));
-/**@type {PlurOpera} */
-this.reads = simulOpera(this.read);
-/**@type {BasicOpera} */
-this.write = (file,/**@type {string|NodeJS.ArrayBufferView} */data = '',/**@type {string} */options = 'utf-8') => setOpn(file, (t, o) => fs.writeFile(file, String(data), options, e => e ? o(e) : t(true)));
-this.getFolderO = (file = '.', sep = path.sep) => {
-	if (file[file.length - 1] === sep) return file;
-	const i = file.lastIndexOf(sep) + 1;
-	return i ? file.slice(0, i) : '';
+const simulOpera = (opn) => (list) => scpo_proce_1.default.all(list.map(e => opn(e)));
+const queueOpera = (opn) => (list) => scpo_proce_1.default.snake(list.map(e => t => opn(e).then(t)));
+const isExist = (file) => (0, scpo_proce_1.default)((t) => fs.access(file, fs.constants.F_OK, e => t(!e, file)));
+exports.isExist = isExist;
+exports.isExists = simulOpera(exports.isExist);
+const testFiles = (list) => scpo_proce_1.default.snake(list.map(e => (t, o) => (0, exports.isExist)(e).then(r => r ? o(e) : t()))).then(() => false, e => e);
+exports.testFiles = testFiles;
+const existFiles = (list) => (0, exports.isExists)(list).then((n, f, r = []) => (n.forEach((e, i) => e && r.push(f[i])), r));
+exports.existFiles = existFiles;
+const readdir = (file) => (0, scpo_proce_1.default)((t, o) => fs.readdir(file, 'utf-8', (e, d) => e ? o(e) : t(d)));
+exports.readdir = readdir;
+const stat = (file) => setOpn(file, (t, o) => fs.stat(file, (e, d) => e ? o(e) : t(d, file)));
+exports.stat = stat;
+exports.stats = simulOpera(exports.stat);
+const statDir = (file) => (0, exports.readdir)(file).then(e => (0, exports.stats)(e.map(d => path_1.default.join(file, d)))).take(1);
+exports.statDir = statDir;
+const isDirectory = (file) => (0, exports.stat)(file).then(e => e.isDirectory());
+exports.isDirectory = isDirectory;
+exports.isDirectorys = simulOpera(exports.isDirectory);
+const mkdir = (file) => setQue('mkdir', (t, o) => (0, exports.isExist)(file).then(b => b ? (0, exports.stat)(file).then(e => t(e.isDirectory()), o) : fs.mkdir(file, e => e ? o(e) : t(true))));
+exports.mkdir = mkdir;
+exports.mkdirs = queueOpera(exports.mkdir);
+const mkdirAll = (file) => (0, exports.mkdirs)((0, exports.fileRoute)(file));
+exports.mkdirAll = mkdirAll;
+exports.mkdirsAll = queueOpera(exports.mkdirAll);
+const rmdir = (file) => setOpn(file, (t, o) => fs.rmdir(file, e => e ? o(e) : t(true)));
+exports.rmdir = rmdir;
+exports.rmdirs = queueOpera(exports.rmdir);
+const rmdirAll = (file) => (0, exports.rmdirs)((0, exports.fileRoute)(file).reverse());
+exports.rmdirAll = rmdirAll;
+exports.rmdirsAll = queueOpera(exports.rmdirAll);
+const unlink = (file) => setOpn(file, (t, o) => fs.unlink(file, e => e ? o(e) : t(true)));
+exports.unlink = unlink;
+exports.unlinks = simulOpera(exports.unlink);
+const deleteAll = (file) => (0, exports.stat)(file).then(s => s.isDirectory() ? (0, exports.statDir)(file).then((s, f) => scpo_proce_1.default.all(s.map((e, i) => e.isDirectory() ? (0, exports.deleteAll)(f[i]) : (0, exports.unlink)(f[i]))).then(() => (0, exports.rmdir)(file))).take(2) : (0, exports.unlink)(file)).take(1);
+exports.deleteAll = deleteAll;
+const open = (file, flags) => (0, scpo_proce_1.default)((t, o) => fs.open(file, flags, (e, d) => e ? o(e) : t(d)));
+exports.open = open;
+const read = (file, options = 'utf-8') => setOpn(file, (t, o) => fs.readFile(file, options, (e, d) => e ? o(e) : t(d)));
+exports.read = read;
+exports.reads = simulOpera(exports.read);
+const write = (file, data = '', options = 'utf-8') => setOpn(file, (t, o) => fs.writeFile(file, String(data), options, e => e ? o(e) : t(true)));
+exports.write = write;
+const getFolderO = (file = '.', sep = path_1.default.sep) => {
+    if (file[file.length - 1] === sep)
+        return file;
+    const i = file.lastIndexOf(sep) + 1;
+    return i ? file.slice(0, i) : '';
 };
-this.getFolder = pathCnvtoN(this.getFolderO);
-this.getFolderS = pathCnvtoS(this.getFolderO);
-this.fileRouteO = (folder = './', sep = path.sep) => {
-	let r = '';
-	const a = folder.split(sep);
-	return a[a.length - 1] || a.pop(), a.map(e => r += e + sep);
+exports.getFolderO = getFolderO;
+const getFolder = (file = '.') => (0, exports.getFolderO)(file, '/');
+exports.getFolder = getFolder;
+const fileRouteO = (folder = './', sep = path_1.default.sep) => {
+    let r = '';
+    const a = folder.split(sep);
+    return a[a.length - 1] || a.pop(), a.map(e => r += e + sep);
 };
-this.fileRoute = pathCnvtoN(this.fileRouteO);
-this.fileRouteS = pathCnvtoS(this.fileRouteO);
-this.sJoinO = (a, b, sep = path.sep) => a[a.length - 1] === sep ? a + b : a + sep + b;
-this.sJoin = pathCnvtoN(this.sJoinO);
-this.sJoinS = pathCnvtoS(this.sJoinO);
+exports.fileRouteO = fileRouteO;
+const fileRoute = (folder = '.') => (0, exports.fileRouteO)(folder, '/');
+exports.fileRoute = fileRoute;
+const sJoinO = (a, b, sep = path_1.default.sep) => a[a.length - 1].indexOf(sep) ? a + sep + b : a + b;
+exports.sJoinO = sJoinO;
+const sJoin = (a, b) => (0, exports.sJoinO)(a, b, '/');
+exports.sJoin = sJoin;

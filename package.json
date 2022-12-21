@@ -3,8 +3,7 @@
   "version": "0.9.0",
   "description": "Some practical functions SC-NodeServer based on",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [
     "sc-nodeserver",
     "util",
@@ -16,5 +15,10 @@
     "regexp"
   ],
   "author": "E0SelmY4V",
-  "license": "GPL-3.0-or-later"
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "accurtype": "^2.4.166",
+    "scpo-proce": "^1.1.2022122010",
+    "@types/node": "^18.11.17"
+  }
 }
