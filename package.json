@@ -14,6 +14,14 @@
     "path",
     "regexp"
   ],
+	"repository": {
+	  "type": "git",
+	  "url": "git+https://github.com/E0SelmY4V/prac-fn.git"
+	},
+	"bugs": {
+	  "url": "https://github.com/E0SelmY4V/prac-fn/issues"
+	},
+	"homepage": "https://github.com/E0SelmY4V/prac-fn#readme",
   "author": "e0selmy4v",
   "license": "GPL-3.0-or-later",
   "dependencies": {
