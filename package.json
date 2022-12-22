@@ -27,6 +27,6 @@
   "dependencies": {
     "accurtype": "^2.4.166",
     "scpo-proce": "^1.1.2022122010",
-    "@types/node": "^18.11.17"
+    "@types/node": ""
   }
 }
