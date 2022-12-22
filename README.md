@@ -4,6 +4,6 @@
 
 ## All Modules
 
-1. `file` the library based on `fs`
+1. `file@1.0.0` the library based on `fs`
 
-2. `lang` some JS language tools
+2. `lang@1.0.0` some JS language tools
