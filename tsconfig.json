@@ -14,13 +14,13 @@
 		"strictPropertyInitialization": true,
 		"strictBindCallApply": true,
 		"noImplicitThis": true,
+		"outDir": "build",
+		"declaration": true,
 	},
 	"exclude": [
+		"build",
+		"test",
 		"node_modules",
 		"**/node_modules/*"
-	],
-	"files": [
-		"file.ts",
-		"lang.ts",
 	],
 }
