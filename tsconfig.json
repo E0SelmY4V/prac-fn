@@ -14,8 +14,6 @@
 		"strictPropertyInitialization": true,
 		"strictBindCallApply": true,
 		"noImplicitThis": true,
-		"outDir": "build",
-		"declaration": true,
 	},
 	"exclude": [
 		"build",
