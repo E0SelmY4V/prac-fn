@@ -1,6 +1,6 @@
 {
   "name": "prac-fn",
-  "version": "1.1223.1",
+  "version": "1.1223.2",
   "description": "Some practical functions SC-NodeServer based on",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,6 @@
     "accurtype": "^2.4.166",
     "scpo-proce": "^1.1220.20",
     "@types/node": "",
-    "jexpt": "^1.2.2"
+    "jexpt": "^1.2.3"
   }
 }
