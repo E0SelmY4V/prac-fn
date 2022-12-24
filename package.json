@@ -2,7 +2,7 @@
   "name": "prac-fn",
   "version": "1.1223.1",
   "description": "Some practical functions SC-NodeServer based on",
-  "main": "build/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "tsc"
   },

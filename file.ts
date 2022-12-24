@@ -4,6 +4,12 @@ import P from 'scpo-proce'
 import type { IfredArr } from 'accurtype'
 import type { EventEmitter } from 'events'
 
+/**
+ * |简·陋| - 各种方便好用的文件操作函数
+ * @version 1.0.0
+ * @author E0SelmY4V
+ */
+declare module "prac-fn/file"
 const quFile: { [name: string]: P.Nxtable } = {}
 const setOpn = <P extends any[], E extends any[]>(name: string, callback: P.CbNxt<P, [], E>) => quFile[name] = (quFile[name] || (quFile[name] = P)).next(callback).setBefore()
 const quFunc: { [mod: string]: P.Nxtable } = {

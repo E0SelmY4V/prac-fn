@@ -2,6 +2,12 @@ import path from 'path'
 import P from 'scpo-proce'
 import type { Tostrable } from 'accurtype'
 
+/**
+ * |简·陋| - 各种方便好用的 JS 功能函数
+ * @version 1.0.0
+ * @author E0SelmY4V
+ */
+declare module "prac-fn/lang"
 const apply = P.apply
 export const isPathfwd = path.sep === '/'
 export const pathType = (file = '') => {
